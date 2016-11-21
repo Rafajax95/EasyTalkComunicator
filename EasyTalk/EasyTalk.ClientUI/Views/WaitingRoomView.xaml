@@ -1,0 +1,61 @@
+﻿<Page x:Class="EasyTalk.ClientUI.Views.WaitingRoomView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:EasyTalk.ClientUI.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="1000"
+      Title="ComunictorPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="34"/>
+            <RowDefinition Height="34"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="207*"/>
+            <RowDefinition Height="8"/>
+            <RowDefinition Height="208*"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="21*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+
+        <Label x:Name="TopInfoLB" FontWeight="Bold" FontSize="16" Content="Zalogowano jako:...  IP Serwera:... &#xD;&#xA;Pokój: ...      Stan Połączenia: Oczekiwanie..." Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+        <Label x:Name="ConnectionStatusLB" FontWeight="Bold" FontSize="16" Content="Twój Status: Niezalogowany" Grid.Column="4" Grid.Row="1" Grid.ColumnSpan="2"/>
+        <Button x:Name="ChangeStatusBT" FontWeight="Bold"  FontSize="14" Content="Zaraz Wracam" Grid.Row="2" Grid.Column="4" Margin="3" Click="ChangeStatusBT_Click"/>
+        <Button x:Name="LogoutBT" FontWeight="Bold"  FontSize="14" Content="Wyloguj" Grid.Row="2" Grid.Column="5" Margin="3" Click="LogoutBT_Click"/>
+        <RichTextBox Background="#FFC6F0AF" x:Name="richTextBox" Grid.Column="1" Grid.Row="4"  IsReadOnly="True" VerticalScrollBarVisibility="Auto" Grid.RowSpan="3" Grid.ColumnSpan="2">
+            <FlowDocument>
+                <Paragraph>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto"  Grid.Column="4" Grid.Row="4" Grid.ColumnSpan="2">
+            <StackPanel x:Name="RoomsSP"  Background="#FFC6F0AF"/>
+        </ScrollViewer>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="4" Grid.Row="6" Grid.ColumnSpan="2">
+            <StackPanel x:Name="UsersSP"  Background="#FFC6F0AF"/>
+        </ScrollViewer>
+
+        
+        <Label x:Name="MessageRecipientLB"  Background="#FFC6F0AF" FontSize="12" Grid.Row="8" Grid.Column="1" Content="Oczekiwanie..."></Label>
+        <TextBox x:Name="NewMessageTB" BorderThickness="1" FontSize="15" Grid.Column="2" Grid.Row="8" Background="#FFC6F0AF"/>
+        
+        <Button x:Name="SendBT" FontWeight="Bold"  FontSize="14" Content="Wyślij" Grid.Row="8" Grid.Column="4" Margin="3,0,3,0" Click="SendBT_Click" />
+        <Button x:Name="NewRoomBT" FontWeight="Bold"  FontSize="14" Content="Nowy Pokój" Grid.Row="8" Grid.Column="5" Margin="3,0,3,0"/>
+
+    </Grid>
+</Page>
