@@ -84,18 +84,21 @@ namespace EasyTalk.EasyServer
 			Client sender = AllClients.Where(x => x.user.Id == messageAsTextRequest.senderId).FirstOrDefault();
 			Client recipient = AllClients.Where(x => x.user.Id == messageAsTextRequest.recipientId).FirstOrDefault();
 
-			string messageToSend = String.Format("{0}: {1}",sender.user.Name,messageAsTextRequest.content);
-			string preparedMessage = MessageWriter.TextMessageResponse(sender.user.Id, messageToSend);
+
+
 
 			if (messageAsTextRequest.textMessageType == TextMessageType.Private)
 			{
-
+				string messageToSend = String.Format("{0}->{1} : {2}",sender.user.Name,recipient.user.Name,messageAsTextRequest.content);
+				string preparedMessage = MessageWriter.TextMessageResponse(sender.user.Id, messageToSend);
 				WriteToClient(preparedMessage, sender);
 				WriteToClient(preparedMessage, recipient);
 			}
 
 			if (messageAsTextRequest.textMessageType == TextMessageType.Public)
 			{
+				string messageToSend = String.Format("{0}: {1}", sender.user.Name, messageAsTextRequest.content);
+				string preparedMessage = MessageWriter.TextMessageResponse(sender.user.Id, messageToSend);
 				List<Client> recipients = AllClients.Where(x => x.user.RoomId == messageAsTextRequest.recipientId).ToList();
 				foreach(var rec in recipients)
 				{

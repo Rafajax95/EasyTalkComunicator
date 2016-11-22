@@ -64,6 +64,9 @@
     <Compile Include="UserControls\UserLabel.xaml.cs">
       <DependentUpon>UserLabel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RoomView.xaml.cs">
+      <DependentUpon>RoomView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WaitingRoomView.xaml.cs">
       <DependentUpon>WaitingRoomView.xaml</DependentUpon>
     </Compile>
@@ -91,6 +94,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UserLabel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RoomView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

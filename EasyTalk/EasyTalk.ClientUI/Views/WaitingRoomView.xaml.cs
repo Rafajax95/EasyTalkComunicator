@@ -61,7 +61,7 @@ namespace EasyTalk.ClientUI.Views
 				if (Connection.Client != null)
 				{
 					SetTopInformations();
-					
+
 					SetRoomsList();
 					if (RoomRecipientLabel == null)
 					{
@@ -107,7 +107,7 @@ namespace EasyTalk.ClientUI.Views
 				}
 			}
 
-			for(int i=0;i<userLabels.Count;i++)
+			for (int i = 0; i < userLabels.Count; i++)
 			{
 				User comparatedUser = Connection.AllUsers.Where(x => x.Id == userLabels[i].User.Id && x.RoomId == userLabels[i].User.RoomId).FirstOrDefault();
 
@@ -162,13 +162,13 @@ namespace EasyTalk.ClientUI.Views
 				Connection.Disconnect();
 
 			Connection = null;
-			
+
 			mainFrame.Navigate(new LoginView(mainFrame));
 			if (sender == null && !IsConnectionLostMessageShowed)
 			{
 				IsConnectionLostMessageShowed = true;
 				MessageBox.Show("Utracono połączenie z serwerem!");
-				
+
 			}
 		}
 
@@ -194,20 +194,55 @@ namespace EasyTalk.ClientUI.Views
 
 				Connection.SendClientStatus();
 			}
-
 		}
 
 		private void SendBT_Click(object sender, RoutedEventArgs e)
 		{
-			try
+			if (Connection.ActualRecipient != null && !String.IsNullOrEmpty(NewMessageTB.Text) && !String.IsNullOrWhiteSpace(NewMessageTB.Text))
 			{
-				Connection.SendTextMessageRequest(NewMessageTB.Text, Connection.ActualRecipient);
-			}
-			catch
+				bool existInUsers = false;
+				bool existInRooms = false;
+				try
+				{
+					existInUsers = Connection.AllUsers.Exists(x => x.Id == (Connection.ActualRecipient as User).Id);
+				}
+				catch{}
+				try
+				{
+					existInRooms = Connection.Rooms.Exists(x => x.Id == (Connection.ActualRecipient as Room).Id);
+				}
+				catch { }
+
+				if (existInUsers || existInRooms)
+					{
+						try
+						{
+							Connection.SendTextMessageRequest(NewMessageTB.Text, Connection.ActualRecipient);
+							NewMessageTB.Text = String.Empty;
+						}
+						catch
+						{
+							LogoutBT_Click(null, null);
+						}
+					}
+					else
+					{
+						NewMessageTB.Text = "Ten odbiorca jest już niedostępny";
+					}
+				}
+		}
+
+		private void NewRoomBT_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void NewMessageTB_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key == Key.Enter)
 			{
-				LogoutBT_Click(null, null);
+				SendBT_Click(null, null);
 			}
-			
 		}
 	}
 }
