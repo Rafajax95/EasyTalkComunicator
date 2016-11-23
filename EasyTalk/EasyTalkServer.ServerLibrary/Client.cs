@@ -72,10 +72,26 @@ namespace EasyTalk.EasyServer
 							ReadCreateRoomRequest(messageModel);
 							break;
 					}
-
+					CheckRooms();
 					WriteToAllClients(MessageWriter.ServerStatusMessage(server.Users, server.Rooms));
 				}
 			});
+		}
+
+		private void CheckRooms()
+		{
+			object locker = new object();
+			lock (locker)
+			{
+				for (int i = 0; i < server.Rooms.Count; i++)
+				{
+					if (!server.Users.Exists(x => x.RoomId == server.Rooms[i].Id) && server.Rooms[i].Id != 0)
+					{
+						server.Rooms.RemoveAt(i);
+						i--;
+					}
+				}
+			}
 		}
 
 		private void ReadTextMessageRequest(MessageModel message)
@@ -89,7 +105,7 @@ namespace EasyTalk.EasyServer
 
 			if (messageAsTextRequest.textMessageType == TextMessageType.Private)
 			{
-				string messageToSend = String.Format("{0}->{1} : {2}",sender.user.Name,recipient.user.Name,messageAsTextRequest.content);
+				string messageToSend = String.Format("{0}->{1} : {2}", sender.user.Name, recipient.user.Name, messageAsTextRequest.content);
 				string preparedMessage = MessageWriter.TextMessageResponse(sender.user.Id, messageToSend);
 				WriteToClient(preparedMessage, sender);
 				WriteToClient(preparedMessage, recipient);
@@ -100,7 +116,7 @@ namespace EasyTalk.EasyServer
 				string messageToSend = String.Format("{0}: {1}", sender.user.Name, messageAsTextRequest.content);
 				string preparedMessage = MessageWriter.TextMessageResponse(sender.user.Id, messageToSend);
 				List<Client> recipients = AllClients.Where(x => x.user.RoomId == messageAsTextRequest.recipientId).ToList();
-				foreach(var rec in recipients)
+				foreach (var rec in recipients)
 				{
 					WriteToClient(preparedMessage, rec);
 				}
@@ -175,9 +191,22 @@ namespace EasyTalk.EasyServer
 			user.RoomId = (message as UserStatusMessageModel).user.RoomId;
 			user.Name = (message as UserStatusMessageModel).user.Name;
 		}
+
 		private void ReadCreateRoomRequest(MessageModel message)
 		{
-			//TODO: Uzupełnić przy wdrażaniu dodawania roomu.
+			object locker = new object();
+			int id = GetFreeId(server.Rooms.Select(x => x.Id).ToList());
+			string roomName = (message as CreateRoomRequestModel).roomName;
+			string password = (message as CreateRoomRequestModel).roomPassword;
+			Room newRoom = new Room(id, roomName, password);
+			lock (locker)
+			{
+				server.Rooms.Add(newRoom);
+				user.RoomId = id;
+				sw.WriteLine(MessageWriter.RoomStatusMessage(newRoom));
+				sw.Flush();
+
+			}
 		}
 
 		private int GetFreeId(List<int> busyIds)

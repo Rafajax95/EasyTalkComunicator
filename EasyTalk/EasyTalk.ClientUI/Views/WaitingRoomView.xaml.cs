@@ -234,7 +234,8 @@ namespace EasyTalk.ClientUI.Views
 
 		private void NewRoomBT_Click(object sender, RoutedEventArgs e)
 		{
-
+			Window win = new CreateRoomWindow(Connection, mainFrame);
+			win.ShowDialog();
 		}
 
 		private void NewMessageTB_KeyDown(object sender, KeyEventArgs e)

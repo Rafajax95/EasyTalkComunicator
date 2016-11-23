@@ -18,10 +18,6 @@ namespace EasyTalk.Utils.Models
 			Id = id;
 			Name = name;
 			Password = password;
-			if(Password==null)
-			{
-				Password = String.Empty;
-			}
 		}
 	}
 }

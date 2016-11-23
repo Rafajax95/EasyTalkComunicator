@@ -122,12 +122,22 @@ namespace EasyTalk.Client
 				case MessageTypes.ServerStatusMessage:
 					textMessage = ReadServerStatusMessage(message);
 					break;
+				case MessageTypes.RoomStatusMessage:
+					textMessage = ReadRoomStatusMessage(message);
+					break;
 				default:
 					textMessage = null;
 					break;
 			}
 			return textMessage;
 
+		}
+
+		private string ReadRoomStatusMessage(MessageModel message)
+		{
+			Client.RoomId = (message as RoomStatusMessageModel).room.Id;
+			SendClientStatus();
+			return null;
 		}
 
 		private string ReadServerStatusMessage(MessageModel message)
