@@ -20,13 +20,12 @@ namespace EasyTalk.ClientUI.Views
 	/// </summary>
 	public partial class CreateRoomWindow : Window
 	{
-		private Connection connection;
-		Frame parentMainFrame;
-		public CreateRoomWindow(Connection connection, Frame parentMainFrame)
+
+		Connection connection;
+		public CreateRoomWindow(Connection connection)
 		{
 			InitializeComponent();
 			this.connection = connection;
-			this.parentMainFrame = parentMainFrame;
 		}
 
 		private void CancelBT_Click(object sender, RoutedEventArgs e)
@@ -39,7 +38,6 @@ namespace EasyTalk.ClientUI.Views
 			if(!String.IsNullOrEmpty(RoomNameTB.Text) && !String.IsNullOrWhiteSpace(RoomNameTB.Text))
 			{
 				connection.SendCreateRoomRequest(RoomNameTB.Text, PasswordTB.Text);
-				parentMainFrame.Navigate(new RoomView());
 				this.Close();
 			}
 		}

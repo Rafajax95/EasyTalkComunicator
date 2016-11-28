@@ -29,6 +29,7 @@ namespace EasyTalk.Client
 		public bool Connected { get; private set; }
 
 
+
 		public Connection(string ip, int port)
 		{
 			Ip = ip;
@@ -205,9 +206,6 @@ namespace EasyTalk.Client
 			writer.Flush();
 		}
 
-
-
-
 		public void SendUnregistrationMessage()
 		{
 			writer.WriteLine(MessageWriter.UnregistrationMessage(Client.Id));
@@ -216,7 +214,6 @@ namespace EasyTalk.Client
 
 		public void SendCreateRoomRequest(string roomName, string roomPassword)
 		{
-
 			writer.WriteLine(MessageWriter.CreateRoomRequest(roomName, roomPassword));
 			writer.Flush();
 		}

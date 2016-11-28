@@ -154,16 +154,5 @@ namespace EasyTalk.Utils
 			return new ServerStatusMessageModel(messageType, users, rooms);
 		}
 
-
-
-
-
-
-
-
-
-
-
-
 	}
 }

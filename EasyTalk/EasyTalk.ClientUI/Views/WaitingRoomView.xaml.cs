@@ -16,6 +16,7 @@ using EasyTalk.Utils.Models;
 using EasyTalk.Client;
 using EasyTalk.Utils;
 using EasyTalk.ClientUI.UserControls;
+using System.Threading;
 
 namespace EasyTalk.ClientUI.Views
 {
@@ -24,11 +25,13 @@ namespace EasyTalk.ClientUI.Views
 	/// </summary>
 	public partial class WaitingRoomView : Page
 	{
-		private Frame mainFrame;
+		public Frame mainFrame;
 
 		List<UserLabel> userLabels;
 		List<RoomLabel> roomLabels;
 		RoomRecipient RoomRecipientLabel;
+		public RoomView childRoom;
+
 		int RoomId = 0;
 		bool IsConnectionLostMessageShowed;
 		public Connection Connection { get; set; }
@@ -41,14 +44,15 @@ namespace EasyTalk.ClientUI.Views
 			IsConnectionLostMessageShowed = false;
 			userLabels = new List<UserLabel>();
 			roomLabels = new List<RoomLabel>();
-
 			SetListener();
+			RoomChangingListener();
 		}
 
 		private async void SetListener()
 		{
 			while (Connection.Connected)
 			{
+
 				string message = await Connection.Listener();
 
 				if (!String.IsNullOrEmpty(message))
@@ -60,16 +64,21 @@ namespace EasyTalk.ClientUI.Views
 
 				if (Connection.Client != null)
 				{
-					SetTopInformations();
-
-					SetRoomsList();
-					if (RoomRecipientLabel == null)
+					if (RoomId == Connection.Client.RoomId)
 					{
-						RoomRecipientLabel = new RoomRecipient(Connection.Rooms.Where(x => x.Id == RoomId).First(), Connection, MessageRecipientLB);
-						RoomRecipientLabel.Grid_MouseUp(null, null);
-						UsersSP.Children.Add(RoomRecipientLabel);
+						SetTopInformations(this.TopInfoLB, this.ConnectionStatusLB);
+						SetRoomsRecipientLabel(ref this.RoomRecipientLabel, this.UsersSP, this.RoomId);
+						SetUserList(this.userLabels, this.UsersSP, RoomId);
+						SetRoomsList();
 					}
-					SetUserList();
+
+					else if (childRoom != null)
+					{
+						SetTopInformations(childRoom.TopInfoLB, childRoom.ConnectionStatusLB);
+						SetRoomsRecipientLabel(ref childRoom.RoomRecipientLabel, childRoom.UsersSP, childRoom.roomId);
+						SetUserList(childRoom.userLabels, childRoom.UsersSP, childRoom.roomId);
+					}
+
 				}
 
 			}
@@ -82,7 +91,17 @@ namespace EasyTalk.ClientUI.Views
 			richTextBox.LineDown();
 		}
 
-		private void SetUserList()
+		private void SetRoomsRecipientLabel(ref RoomRecipient RoomRecipientLabel, StackPanel UsersSP, int RoomId)
+		{
+			if (RoomRecipientLabel == null)
+			{
+				RoomRecipientLabel = new RoomRecipient(Connection.Rooms.Where(x => x.Id == RoomId).First(), Connection, MessageRecipientLB);
+				RoomRecipientLabel.Grid_MouseUp(null, null);
+				UsersSP.Children.Add(RoomRecipientLabel);
+			}
+		}
+
+		private void SetUserList(List<UserLabel> userLabels, StackPanel UsersSP, int RoomId)
 		{
 			foreach (var user in Connection.AllUsers)
 			{
@@ -118,8 +137,20 @@ namespace EasyTalk.ClientUI.Views
 					i--;
 				}
 			}
+		}
 
-
+		internal void ClientBackToWaitingRoom()
+		{
+			childRoom = null;
+			if (Connection.Client.Status == Status.Online)
+			{
+				ChangeStatusBT.Content = "Dostępny";
+			}
+			else
+			{
+				ChangeStatusBT.Content = "Zaraz Wracam";
+			}
+			RoomRecipientLabel.Grid_MouseUp(null, null);
 		}
 
 		private void SetRoomsList()
@@ -136,26 +167,29 @@ namespace EasyTalk.ClientUI.Views
 				}
 			}
 
-			foreach (var roomToCheck in roomLabels)
+
+			for (int i = 0; i < roomLabels.Count; i++)
 			{
-				Room comparatedRoom = Connection.Rooms.Where(x => x.Id == roomToCheck.Room.Id).FirstOrDefault();
+				Room comparatedRoom = Connection.Rooms.Where(x => x.Id == roomLabels[i].Room.Id).FirstOrDefault();
 
 				if (comparatedRoom == null)
 				{
-					roomLabels.Remove(roomToCheck);
-					RoomsSP.Children.Remove(roomToCheck);
+					RoomsSP.Children.Remove(roomLabels[i]);
+					roomLabels.Remove(roomLabels[i]);
+					i--;
 				}
 			}
 		}
 
 
-		private void SetTopInformations()
+		private void SetTopInformations(Label TopInfoLB, Label ConnectionStatusLB)
 		{
-			TopInfoLB.Content = String.Format("Zalogowano jako: {0}          IP Serwera: {1}{2}Pokój: Poczekalnia", Connection.Client.Name, Connection.Ip, Environment.NewLine);
+			string roomName = Connection.Rooms.Where(x => x.Id == Connection.Client.RoomId).First().Name;
+			TopInfoLB.Content = String.Format("Zalogowano jako: {0}          IP Serwera: {1}{2}Pokój: {3}", Connection.Client.Name, Connection.Ip, Environment.NewLine, roomName);
 			ConnectionStatusLB.Content = String.Format("Twój status: {0}", StatusToString.Convert(Connection.Client.Status));
 		}
 
-		private void LogoutBT_Click(object sender, RoutedEventArgs e)
+		public void LogoutBT_Click(object sender, RoutedEventArgs e)
 		{
 
 			if (Connection != null)
@@ -206,7 +240,7 @@ namespace EasyTalk.ClientUI.Views
 				{
 					existInUsers = Connection.AllUsers.Exists(x => x.Id == (Connection.ActualRecipient as User).Id);
 				}
-				catch{}
+				catch { }
 				try
 				{
 					existInRooms = Connection.Rooms.Exists(x => x.Id == (Connection.ActualRecipient as Room).Id);
@@ -214,27 +248,27 @@ namespace EasyTalk.ClientUI.Views
 				catch { }
 
 				if (existInUsers || existInRooms)
+				{
+					try
 					{
-						try
-						{
-							Connection.SendTextMessageRequest(NewMessageTB.Text, Connection.ActualRecipient);
-							NewMessageTB.Text = String.Empty;
-						}
-						catch
-						{
-							LogoutBT_Click(null, null);
-						}
+						Connection.SendTextMessageRequest(NewMessageTB.Text, Connection.ActualRecipient);
+						NewMessageTB.Text = String.Empty;
 					}
-					else
+					catch
 					{
-						NewMessageTB.Text = "Ten odbiorca jest już niedostępny";
+						LogoutBT_Click(null, null);
 					}
 				}
+				else
+				{
+					NewMessageTB.Text = "Ten odbiorca jest już niedostępny";
+				}
+			}
 		}
 
 		private void NewRoomBT_Click(object sender, RoutedEventArgs e)
 		{
-			Window win = new CreateRoomWindow(Connection, mainFrame);
+			Window win = new CreateRoomWindow(Connection);
 			win.ShowDialog();
 		}
 
@@ -244,6 +278,41 @@ namespace EasyTalk.ClientUI.Views
 			{
 				SendBT_Click(null, null);
 			}
+		}
+
+		private void OnRoomChanged(Room room)
+		{
+			if (room.Id != 0)
+			{
+				this.Dispatcher.Invoke(() =>
+				{
+					childRoom = new RoomView(this, room);
+					mainFrame.Navigate(childRoom);
+				});
+
+			}
+		}
+
+		private async void RoomChangingListener()
+		{
+			await Task.Run(() =>
+			{
+				while (true)
+				{
+					if (Connection == null)
+						break;
+					if (Connection.Client != null && childRoom == null)
+					{
+						if (Connection.Client.RoomId != RoomId && Connection.Client.RoomId != 0)
+						{
+							Room newRoom = Connection.Rooms.Where(x => x.Id == Connection.Client.RoomId).FirstOrDefault();
+							if (newRoom != null)
+								OnRoomChanged(newRoom);
+						}
+					}
+					Thread.Sleep(10);
+				}
+			});
 		}
 	}
 }

@@ -48,7 +48,7 @@
 
 
         <Label x:Name="MessageRecipientLB"  Background="#FFC6F0AF" FontSize="12" Grid.Row="8" Grid.Column="1" Content="Oczekiwanie..."></Label>
-        <TextBox x:Name="NewMessageTB" BorderThickness="1" FontSize="15" Grid.Column="2" Grid.Row="8" Background="#FFC6F0AF"/>
+        <TextBox x:Name="NewMessageTB" BorderThickness="1" FontSize="15" Grid.Column="2" Grid.Row="8" Background="#FFC6F0AF" KeyDown="NewMessageTB_KeyDown"/>
 
         <Button x:Name="SendBT" FontWeight="Bold"  FontSize="14" Content="Wyślij" Grid.Row="8" Grid.Column="4" Margin="3,0,3,0" Click="SendBT_Click" />
         <Button x:Name="QuitRoomBT" FontWeight="Bold"  FontSize="14" Content="Wyjdź z Pokoju" Grid.Row="8" Grid.Column="5" Margin="3,0,3,0" Click="QuitRoomBT_Click"/>
