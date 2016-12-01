@@ -1,4 +1,5 @@
-﻿using EasyTalk.Utils.Models;
+﻿using EasyTalk.Client;
+using EasyTalk.Utils.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,10 +23,12 @@ namespace EasyTalk.ClientUI.UserControls
 	public partial class RoomLabel : UserControl
 	{
 		public Room Room;
-		public RoomLabel(Room room)
+		private Connection connection;
+		public RoomLabel(Room room,Connection connection)
 		{
 			Room = room;
 			InitializeComponent();
+			this.connection = connection;
 			RoomNameLB.Content = room.Name;
 		}
 
@@ -37,6 +40,15 @@ namespace EasyTalk.ClientUI.UserControls
 		private void UserControl_MouseLeave(object sender, MouseEventArgs e)
 		{
 			Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF81D650"));
+		}
+
+		private void UserControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			if(e.ClickCount >= 2)
+			{
+				connection.Client.RoomId = Room.Id;
+				connection.SendClientStatus();
+			}
 		}
 	}
 }

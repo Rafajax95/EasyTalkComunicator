@@ -17,6 +17,7 @@ using EasyTalk.Utils.Models;
 using static EasyTalk.Utils.StatusToString;
 using EasyTalk.Utils;
 using EasyTalk.Client;
+using EasyTalk.ClientUI.Views;
 
 namespace EasyTalk.ClientUI.UserControls
 {
@@ -26,14 +27,12 @@ namespace EasyTalk.ClientUI.UserControls
 	public partial class UserLabel : UserControl
 	{
 		public User User;
-		Connection connection;
-		Label recipientLabel;
-		public UserLabel(User user, Connection connection, Label recipientLabel)
+		WaitingRoomView parent;
+		public UserLabel(User user, WaitingRoomView parent)
 		{
 			InitializeComponent();
 			UpdateContent(user);
-			this.connection = connection;
-			this.recipientLabel = recipientLabel;
+			this.parent = parent;
 		}
 
 		private void UserControl_MouseEnter(object sender, MouseEventArgs e)
@@ -92,8 +91,13 @@ namespace EasyTalk.ClientUI.UserControls
 
 		private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
 		{
-			connection.ActualRecipient = User;
-			recipientLabel.Content = User.Name;
+			parent.Connection.ActualRecipient = User;
+
+			if (parent.childRoom == null)
+				parent.MessageRecipientLB.Content = User.Name;
+			else
+				parent.childRoom.MessageRecipientLB.Content = User.Name;
+
 		}
 	}
 }

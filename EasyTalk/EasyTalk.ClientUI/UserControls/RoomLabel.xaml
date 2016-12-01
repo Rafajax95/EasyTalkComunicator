@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EasyTalk.ClientUI.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="210" MaxWidth="210" MouseLeave="UserControl_MouseLeave" Margin="2" MouseEnter="UserControl_MouseEnter" >
+             d:DesignHeight="30" d:DesignWidth="210" MaxWidth="210" MouseLeave="UserControl_MouseLeave" Margin="2" MouseEnter="UserControl_MouseEnter" MouseLeftButtonDown="UserControl_MouseLeftButtonDown" >
     <Border x:Name="Content"  BorderThickness="1" Background="#FF81D650" BorderBrush="#FF225305"  CornerRadius="8,8,8,8">
         <Grid>
             <Grid.ColumnDefinitions>

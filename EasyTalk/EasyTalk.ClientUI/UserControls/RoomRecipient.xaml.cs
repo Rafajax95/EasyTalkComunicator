@@ -1,4 +1,5 @@
 ﻿using EasyTalk.Client;
+using EasyTalk.ClientUI.Views;
 using EasyTalk.Utils.Models;
 using System;
 using System.Collections.Generic;
@@ -23,14 +24,13 @@ namespace EasyTalk.ClientUI.UserControls
 	public partial class RoomRecipient : UserControl
 	{
 		Room room;
-		Connection connection;
-		Label recipientLabel;
-		public RoomRecipient(Room room, Connection connection, Label recipientLabel)
+		WaitingRoomView parent;
+
+		public RoomRecipient(Room room, WaitingRoomView parent)
 		{
 			InitializeComponent();
 			this.room = room;
-			this.connection = connection;
-			this.recipientLabel = recipientLabel;
+			this.parent = parent;
 			RoomLB.Content = String.Format("Wszyscy w: {0}", room.Name);
 		}
 
@@ -46,8 +46,12 @@ namespace EasyTalk.ClientUI.UserControls
 
 		public void Grid_MouseUp(object sender, MouseButtonEventArgs e)
 		{
-			connection.ActualRecipient = room;
-			recipientLabel.Content = room.Name;
+			parent.Connection.ActualRecipient = room;
+
+			if (parent.childRoom == null)
+				parent.MessageRecipientLB.Content = room.Name;
+			else
+				parent.childRoom.MessageRecipientLB.Content = room.Name;
 		}
 	}
 }

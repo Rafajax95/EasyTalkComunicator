@@ -56,7 +56,13 @@ namespace EasyTalk.ClientUI.Views
 				string message = await Connection.Listener();
 
 				if (!String.IsNullOrEmpty(message))
-					AddMessageToRichBox(message);
+				{
+					if(childRoom == null)
+						AddMessageToRichBox(message,this.richTextBox);
+					else
+						AddMessageToRichBox(message, childRoom.richTextBox);
+				}
+
 
 				if (Connection == null)
 					break;
@@ -85,17 +91,17 @@ namespace EasyTalk.ClientUI.Views
 			LogoutBT_Click(null, null);
 		}
 
-		private void AddMessageToRichBox(string message)
+		private void AddMessageToRichBox(string message, RichTextBox target)
 		{
-			richTextBox.AppendText(String.Format("\r{0}", message));
-			richTextBox.LineDown();
+			target.AppendText(String.Format("\r{0}", message));
+			target.LineDown();
 		}
 
 		private void SetRoomsRecipientLabel(ref RoomRecipient RoomRecipientLabel, StackPanel UsersSP, int RoomId)
 		{
 			if (RoomRecipientLabel == null)
 			{
-				RoomRecipientLabel = new RoomRecipient(Connection.Rooms.Where(x => x.Id == RoomId).First(), Connection, MessageRecipientLB);
+				RoomRecipientLabel = new RoomRecipient(Connection.Rooms.Where(x => x.Id == RoomId).First(),this);
 				RoomRecipientLabel.Grid_MouseUp(null, null);
 				UsersSP.Children.Add(RoomRecipientLabel);
 			}
@@ -109,7 +115,7 @@ namespace EasyTalk.ClientUI.Views
 
 				if (userLabel == null && user.RoomId == RoomId)
 				{
-					userLabel = new UserLabel(user, Connection, MessageRecipientLB);
+					userLabel = new UserLabel(user, this);
 					userLabels.Add(userLabel);
 					UsersSP.Children.Add(userLabel);
 				}
@@ -161,7 +167,7 @@ namespace EasyTalk.ClientUI.Views
 
 				if (roomLabel == null && room.Id != RoomId)
 				{
-					roomLabel = new RoomLabel(room);
+					roomLabel = new RoomLabel(room,Connection);
 					roomLabels.Add(roomLabel);
 					RoomsSP.Children.Add(roomLabel);
 				}
