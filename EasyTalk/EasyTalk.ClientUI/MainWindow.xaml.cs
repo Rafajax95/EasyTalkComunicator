@@ -25,10 +25,6 @@ namespace EasyTalk.ClientUI
 		public MainWindow()
 		{
 			InitializeComponent();
-		//	Connection conn = new Connection("192.168.9.16", 2000, "Daniel");
-		//	conn.Connect();
-		//	conn.Client = new User("Daniel", 0);
-		//	mainFrame.Navigate(new Views.WaitingRoomView(mainFrame, conn));
 			mainFrame.Navigate(new Views.LoginView(mainFrame));
 		}
 	}
