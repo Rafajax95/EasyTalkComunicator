@@ -34,12 +34,12 @@ namespace EasyTalk.ClientUI.UserControls
 
 		private void UserControl_MouseEnter(object sender, MouseEventArgs e)
 		{
-			Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF58CD15"));
+			Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFD8D8D8"));
 		}
 
 		private void UserControl_MouseLeave(object sender, MouseEventArgs e)
 		{
-			Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF81D650"));
+			Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFACACAC"));
 		}
 
 		private void UserControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

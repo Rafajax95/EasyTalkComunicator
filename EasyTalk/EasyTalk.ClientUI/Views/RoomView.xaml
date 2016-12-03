@@ -30,25 +30,32 @@
             <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
-
-        <Label x:Name="TopInfoLB" FontWeight="Bold" FontSize="16" Content="Zalogowano jako:...  IP Serwera:... &#xD;&#xA;Pokój: ...      Stan Połączenia: Oczekiwanie..." Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+        
+        <Border BorderThickness="1" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" BorderBrush="#FF363636" CornerRadius="10">
+            <Label x:Name="TopInfoLB" FontWeight="Bold" FontSize="16" Content="Zalogowano jako:...  IP Serwera:... &#xD;&#xA;Pokój: ...      Stan Połączenia: Oczekiwanie..." />
+        </Border>
+        
         <Label x:Name="ConnectionStatusLB" FontWeight="Bold" FontSize="16" Content="Twój Status: Niezalogowany" Grid.Column="4" Grid.Row="1" Grid.ColumnSpan="2"/>
         <Button x:Name="ChangeStatusBT" FontWeight="Bold"  FontSize="14" Content="Zaraz Wracam" Grid.Row="2" Grid.Column="4" Margin="3" Click="ChangeStatusBT_Click"/>
         <Button x:Name="LogoutBT" FontWeight="Bold"  FontSize="14" Content="Wyloguj" Grid.Row="2" Grid.Column="5" Margin="3" Click="LogoutBT_Click"/>
-        <RichTextBox Background="#FFC6F0AF" x:Name="richTextBox" Grid.Column="1" Grid.Row="4"  IsReadOnly="True" VerticalScrollBarVisibility="Auto" Grid.RowSpan="3" Grid.ColumnSpan="2">
+        <RichTextBox Background="#FFBFBFBF" x:Name="richTextBox" Grid.Column="1" Grid.Row="4"  IsReadOnly="True" VerticalScrollBarVisibility="Auto" Grid.RowSpan="3" Grid.ColumnSpan="2">
             <FlowDocument>
                 <Paragraph>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="4" Grid.Row="4" Grid.RowSpan="3" Grid.ColumnSpan="2">
-            <StackPanel x:Name="UsersSP"  Background="#FFC6F0AF"/>
-        </ScrollViewer>
+        <Border Grid.Column="4" Grid.Row="4" Grid.RowSpan="3" Grid.ColumnSpan="2" BorderThickness="1" BorderBrush="#FF363636" CornerRadius="10">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"  >
+                <StackPanel x:Name="UsersSP" />
+            </ScrollViewer>
+        </Border>
 
 
-        <Label x:Name="MessageRecipientLB"  Background="#FFC6F0AF" FontSize="12" Grid.Row="8" Grid.Column="1" Content="Oczekiwanie..."></Label>
-        <TextBox x:Name="NewMessageTB" BorderThickness="1" FontSize="15" Grid.Column="2" Grid.Row="8" Background="#FFC6F0AF" KeyDown="NewMessageTB_KeyDown"/>
+
+
+        <Label x:Name="MessageRecipientLB"  Background="#FFBFBFBF" FontSize="12" Grid.Row="8" Grid.Column="1" Content="Oczekiwanie..."></Label>
+        <TextBox x:Name="NewMessageTB" BorderThickness="1" FontSize="15" Grid.Column="2" Grid.Row="8" Background="#FFBFBFBF" KeyDown="NewMessageTB_KeyDown"/>
 
         <Button x:Name="SendBT" FontWeight="Bold"  FontSize="14" Content="Wyślij" Grid.Row="8" Grid.Column="4" Margin="3,0,3,0" Click="SendBT_Click" />
         <Button x:Name="QuitRoomBT" FontWeight="Bold"  FontSize="14" Content="Wyjdź z Pokoju" Grid.Row="8" Grid.Column="5" Margin="3,0,3,0" Click="QuitRoomBT_Click"/>

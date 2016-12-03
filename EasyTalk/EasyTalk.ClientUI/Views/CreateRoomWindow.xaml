@@ -6,8 +6,16 @@
         xmlns:local="clr-namespace:EasyTalk.ClientUI.Views"
         mc:Ignorable="d"
         Title="CreateRoomWindow" Height="200" Width="400
-        " WindowStyle="None" WindowStartupLocation="CenterScreen"
-        Background="#FFB9F199">
+        " WindowStyle="None" WindowStartupLocation="CenterScreen">
+    <Window.Background>
+        <RadialGradientBrush>
+            <GradientStop Color="#FF666666" Offset="1"/>
+            <GradientStop Color="#FFAEAEAE"/>
+            <GradientStop Color="#FF999999" Offset="0.374"/>
+            <GradientStop Color="#FF818181" Offset="0.691"/>
+        </RadialGradientBrush>
+    </Window.Background>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

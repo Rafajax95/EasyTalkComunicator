@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="210" MaxWidth="210"
                MouseEnter="UserControl_MouseEnter" MouseLeave="UserControl_MouseLeave" Margin="2"  MouseUp="Grid_MouseUp" >
-    <Border x:Name="Content"  BorderThickness="1" Background="#FF81D650" BorderBrush="#FF225305"  CornerRadius="8,8,8,8">
+    <Border x:Name="Content"  BorderThickness="2" Background="#FF58CD15" BorderBrush="#FF225305"  CornerRadius="8,8,8,8">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="45*"/>

@@ -38,9 +38,17 @@ namespace EasyTalk.ClientUI.UserControls
 		private void UserControl_MouseEnter(object sender, MouseEventArgs e)
 		{
 			if (User.Status == Status.Online)
+				Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF81D650"));
+			else
+				Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFF2FF6F"));
+		}
+
+		private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+		{
+			if (User.Status == Status.Online)
 				Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF58CD15"));
 			else
-				Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFBCCD15"));
+				Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCDE200"));
 		}
 
 		internal void UpdateContent(User user)
@@ -54,13 +62,13 @@ namespace EasyTalk.ClientUI.UserControls
 			{
 				if (this.IsMouseOver)
 				{
-					Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF58CD15"));
+					Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF81D650"));
 					Content.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF225305"));
 				}
 
 				else
 				{
-					Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF81D650"));
+					Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF58CD15"));
 					Content.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF225305"));
 				}
 
@@ -69,25 +77,18 @@ namespace EasyTalk.ClientUI.UserControls
 			{
 				if (this.IsMouseOver)
 				{
-					Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFBCCD15"));
-					Content.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA8CB0C"));
+					Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFF2FF6F"));
+					Content.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF00"));
 				}
 				else
 				{
-					Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFB1D650"));
-					Content.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA8CB0C"));
+					Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCDE200"));
+					Content.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF00"));
 				}
 
 			}
 		}
 
-		private void UserControl_MouseLeave(object sender, MouseEventArgs e)
-		{
-			if (User.Status == Status.Online)
-				Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF81D650"));
-			else
-				Content.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFB1D650"));
-		}
 
 		private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
 		{
