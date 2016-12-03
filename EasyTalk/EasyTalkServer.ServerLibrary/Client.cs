@@ -105,10 +105,14 @@ namespace EasyTalk.EasyServer
 
 			if (messageAsTextRequest.textMessageType == TextMessageType.Private)
 			{
-				string messageToSend = String.Format("{0}->{1} : {2}", sender.user.Name, recipient.user.Name, messageAsTextRequest.content);
-				string preparedMessage = MessageWriter.TextMessageResponse(sender.user.Id, messageToSend);
-				WriteToClient(preparedMessage, sender);
-				WriteToClient(preparedMessage, recipient);
+				string messageToRecipient = String.Format("Priv od {0} : {1}", sender.user.Name, messageAsTextRequest.content);
+				string messageToSender = String.Format("Priv do {0} : {1}", recipient.user.Name, messageAsTextRequest.content);
+
+				string preparedMessageToRecipient = MessageWriter.TextMessageResponse(sender.user.Id, messageToRecipient);
+				string preparedMessageSender = MessageWriter.TextMessageResponse(sender.user.Id, messageToSender);
+
+				WriteToClient(preparedMessageSender, sender);
+				WriteToClient(preparedMessageToRecipient, recipient);
 			}
 
 			if (messageAsTextRequest.textMessageType == TextMessageType.Public)

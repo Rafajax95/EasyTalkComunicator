@@ -25,6 +25,15 @@ namespace EasyTalk.EasyServer
 
 		public Server(int port = 2000)
 		{
+			Ip = Dns.GetHostEntry(Dns.GetHostName()).AddressList.Where(x => x.AddressFamily == AddressFamily.InterNetwork).Select(x => x.ToString()).First(x => x.StartsWith("192") || x.StartsWith("172") || x.StartsWith("10"));
+			Port = port;
+			Rooms = new List<Room>();
+			Users = new List<User>();
+			Rooms.Add(new Room(0, "Poczekalnia", null));
+		}
+		public Server(string ip, int port)
+		{
+			Ip = ip;
 			Port = port;
 			Rooms = new List<Room>();
 			Users = new List<User>();
@@ -35,13 +44,12 @@ namespace EasyTalk.EasyServer
 		{
 			mainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-			Ip = Dns.GetHostEntry(Dns.GetHostName()).AddressList.Where(x => x.AddressFamily == AddressFamily.InterNetwork).Select(x => x.ToString()).First(x => x.StartsWith("192"));
 			address = IPAddress.Parse(Ip);
 			endPoint = new IPEndPoint(address, Port);
 			mainSocket.Bind(endPoint);
 			mainSocket.Listen(10);
 			RunListining();
-			Console.WriteLine("Nasłuch na adresie: {0}",Ip);
+			Console.WriteLine("Nasłuch na adresie: {0}", Ip);
 		}
 
 		private async void RunListining()
@@ -55,7 +63,7 @@ namespace EasyTalk.EasyServer
 					NetworkStream stream = new NetworkStream(newClientSocket);
 					StreamWriter sw = new StreamWriter(stream);
 					StreamReader sr = new StreamReader(stream);
-					Client newClient = new Client(stream,this);
+					Client newClient = new Client(stream, this);
 					newClient.RunClientReader(sr, sw);
 				}
 			});
