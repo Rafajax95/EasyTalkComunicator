@@ -38,12 +38,15 @@
         <Label x:Name="ConnectionStatusLB" FontWeight="Bold" FontSize="16" Content="Twój Status: Niezalogowany" Grid.Column="4" Grid.Row="1" Grid.ColumnSpan="2"/>
         <Button x:Name="ChangeStatusBT" FontWeight="Bold"  FontSize="14" Content="Zaraz Wracam" Grid.Row="2" Grid.Column="4" Margin="3" Click="ChangeStatusBT_Click"/>
         <Button x:Name="LogoutBT" FontWeight="Bold"  FontSize="14" Content="Wyloguj" Grid.Row="2" Grid.Column="5" Margin="3" Click="LogoutBT_Click"/>
-        <RichTextBox Background="#FFBFBFBF" x:Name="richTextBox" Grid.Column="1" Grid.Row="4"  IsReadOnly="True" VerticalScrollBarVisibility="Auto" Grid.RowSpan="3" Grid.ColumnSpan="2">
-            <FlowDocument>
-                <Paragraph>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
+
+        <Border Background="#FFBFBFBF" Grid.Column="1" Grid.Row="4" Grid.RowSpan="3" Grid.ColumnSpan="2" CornerRadius="10">
+            <RichTextBox Background="Transparent"  x:Name="richTextBox"  BorderThickness="0"  IsReadOnly="True" VerticalScrollBarVisibility="Auto" >
+                <FlowDocument>
+                    <Paragraph>
+                    </Paragraph>
+                </FlowDocument>
+            </RichTextBox>
+        </Border>
 
         <Border Grid.Column="4" Grid.Row="4" Grid.RowSpan="3" Grid.ColumnSpan="2" BorderThickness="1" BorderBrush="#FF363636" CornerRadius="10">
             <ScrollViewer VerticalScrollBarVisibility="Auto"  >
@@ -54,8 +57,13 @@
 
 
 
-        <Label x:Name="MessageRecipientLB"  Background="#FFBFBFBF" FontSize="12" Grid.Row="8" Grid.Column="1" Content="Oczekiwanie..."></Label>
-        <TextBox x:Name="NewMessageTB" BorderThickness="1" FontSize="15" Grid.Column="2" Grid.Row="8" Background="#FFBFBFBF" KeyDown="NewMessageTB_KeyDown"/>
+        <Border Grid.Row="8" Grid.Column="1" CornerRadius="10,0,0,10" Background="#FFBFBFBF">
+            <Label x:Name="MessageRecipientLB" HorizontalAlignment="Center"  FontSize="12"  Content="Oczekiwanie..."></Label>
+        </Border>
+
+        <Border Grid.Row="8" Grid.Column="2" CornerRadius="0,10,10,0" Background="#FFBFBFBF">
+            <TextBox x:Name="NewMessageTB" BorderThickness="2,0,0,0" FontSize="15" Grid.Column="2" Grid.Row="8" Background="Transparent" KeyDown="NewMessageTB_KeyDown"/>
+        </Border>
 
         <Button x:Name="SendBT" FontWeight="Bold"  FontSize="14" Content="Wyślij" Grid.Row="8" Grid.Column="4" Margin="3,0,3,0" Click="SendBT_Click" />
         <Button x:Name="QuitRoomBT" FontWeight="Bold"  FontSize="14" Content="Wyjdź z Pokoju" Grid.Row="8" Grid.Column="5" Margin="3,0,3,0" Click="QuitRoomBT_Click"/>

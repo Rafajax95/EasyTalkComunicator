@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:EasyTalk.ClientUI.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="210" MaxWidth="210" MouseLeave="UserControl_MouseLeave"  MouseUp="Grid_MouseUp" Margin="2" MouseEnter="UserControl_MouseEnter" >
-    <Border x:Name="Content"  BorderThickness="2" Background="#FF58CD15" BorderBrush="#FF225305"  CornerRadius="8,8,8,8">
+    <Border Cursor="Hand" x:Name="Content"  BorderThickness="2" Background="#FF58CD15" BorderBrush="#FF225305"  CornerRadius="8,8,8,8">
         <Grid>
             <Label x:Name="RoomLB" Content="Pokój"  HorizontalAlignment="Center" />
         </Grid>
